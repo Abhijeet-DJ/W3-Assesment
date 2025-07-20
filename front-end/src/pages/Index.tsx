@@ -29,6 +29,7 @@ const initialUsers: User[] = [
 
 const Index = () => {
   const [users, setUsers] = useState<User[]>([]);
+  // const [allUsers, setAllUsers] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [history, setHistory] = useState<HistoryEntry[]>([]);
   const { toast } = useToast();
@@ -91,12 +92,20 @@ const Index = () => {
 useEffect(() => {
   socket.emit("getUser");
 
-   socket.on("userList", (fetchedUsers: User[]) => {
-      const topUsers = [...fetchedUsers]
-        .sort((a, b) => b.points - a.points)
-        .slice(0, 10);
-      setUsers(topUsers);
-    });
+  //  socket.on("userList", (fetchedUsers: User[]) => {
+  //     // const allU = [...fetchedUsers]
+  //     // setAllUsers(allU)
+  //     const topUsers = [...fetchedUsers]
+  //       .sort((a, b) => b.points - a.points)
+  //       .slice(0, 10);
+  //     setUsers(topUsers);
+  //   });
+
+  socket.on("userList", (fetchedUsers: User[]) => {
+  const sorted = [...fetchedUsers].sort((a, b) => b.points - a.points); // Optional: keep sorting
+  setUsers(sorted); // ✅ Set all users
+});
+
 
     console.log(users);
 
